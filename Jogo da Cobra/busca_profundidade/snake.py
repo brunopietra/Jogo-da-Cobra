@@ -15,7 +15,7 @@ class Square:
         if self.is_apple:
             self.dir = [0, 0]
 
-    def draw(self, clr=SNAKE_CLR):
+    def draw(self, clr=COR_COBRA):
         x, y = self.pos[0], self.pos[1]
         ss, gs = SQUARE_SIZE, GAP_SIZE
 
@@ -52,7 +52,7 @@ class Square:
         self.pos[1] += self.dir[1]
 
     def hitting_wall(self):
-        if (self.pos[0] <= -1) or (self.pos[0] >= ROWS) or (self.pos[1] <= -1) or (self.pos[1] >= ROWS):
+        if (self.pos[0] <= -1) or (self.pos[0] >= LINHAS) or (self.pos[1] <= -1) or (self.pos[1] >= LINHAS):
             return True
         else:
             return False
@@ -62,12 +62,12 @@ class Snake:
     def __init__(self, surface):
         self.surface = surface
         self.is_dead = False
-        self.squares_start_pos = [[ROWS // 2 + i, ROWS // 2] for i in range(INITIAL_SNAKE_LENGTH)]
+        self.squares_start_pos = [[LINHAS // 2 + i, LINHAS // 2] for i in range(TAMANHO_INICIAL_COBRA)]
         self.turns = {}
         self.dir = [-1, 0]
         self.score = 0
         self.moves_without_eating = 0
-        self.apple = Square([randrange(ROWS), randrange(ROWS)], self.surface, is_apple=True)
+        self.apple = Square([randrange(LINHAS), randrange(LINHAS)], self.surface, is_apple=True)
 
         self.squares = []
         for pos in self.squares_start_pos:
@@ -83,11 +83,11 @@ class Snake:
         self.won_game = False
 
     def draw(self):
-        self.apple.draw(APPLE_CLR)
-        self.head.draw(HEAD_CLR)
+        self.apple.draw(COR_COMIDA)
+        self.head.draw(COR_CABECA)
         for sqr in self.squares[1:]:
             if self.is_virtual_snake:
-                sqr.draw(VIRTUAL_SNAKE_CLR)
+                sqr.draw(COR_COBRA_VIRTUAL)
             else:
                 sqr.draw()
 
@@ -168,7 +168,7 @@ class Snake:
                 return True
 
     def generate_apple(self):
-        self.apple = Square([randrange(ROWS), randrange(ROWS)], self.surface, is_apple=True)
+        self.apple = Square([randrange(LINHAS), randrange(LINHAS)], self.surface, is_apple=True)
         if not self.is_position_free(self.apple.pos):
             self.generate_apple()
 
@@ -179,7 +179,7 @@ class Snake:
             self.score += 1
             return True
 
-    def go_to(self, position):  # Set head direction to target position
+    def go_to(self, position):  # SETANDO DIREÇÃO DA CABEÇA DA COBRA
         if self.head.pos[0] - 1 == position[0]:
             self.set_direction('left')
         if self.head.pos[0] + 1 == position[0]:
@@ -190,15 +190,15 @@ class Snake:
             self.set_direction('down')
 
     def is_position_free(self, position):
-        if position[0] >= ROWS or position[0] < 0 or position[1] >= ROWS or position[1] < 0:
+        if position[0] >= LINHAS or position[0] < 0 or position[1] >= LINHAS or position[1] < 0:
             return False
         for sqr in self.squares:
             if sqr.pos == position:
                 return False
         return True
 
-    # Breadth First Search Algorithm
-    def bfs(self, s, e):  # Find shortest path between (start_position, end_position)
+    # BFS (BUSCA EM LARGURA)
+    def bfs(self, s, e):  # Achar o menor caminho entre dois pontos
         q = [s]  # Queue
         visited = {tuple(pos): False for pos in GRID}
 
@@ -207,7 +207,7 @@ class Snake:
         # Prev is used to find the parent node of each node to create a feasible path
         prev = {tuple(pos): None for pos in GRID}
 
-        while q:  # While queue is not empty
+        while q:  # ENQUANTO A FILA NÃO ESTIVER VAZIA
             node = q.pop(0)
             neighbors = ADJACENCY_DICT[node]
             for next_node in neighbors:
@@ -231,7 +231,7 @@ class Snake:
 
         return []  # Path not available
 
-    def create_virtual_snake(self):  # Creates a copy of snake (same size, same position, etc..)
+    def create_virtual_snake(self):  # COBRA VIRTUAL É UMA CÓPIA DA COBRA ORIGINAL
         v_snake = Snake(self.surface)
         for i in range(len(self.squares) - len(v_snake.squares)):
             v_snake.add_square()
@@ -297,7 +297,7 @@ class Snake:
 
     def set_path(self):
         # If there is only 1 apple left for snake to win and it's adjacent to head
-        if self.score == SNAKE_MAX_LENGTH - 1 and self.apple.pos in get_neighbors(self.head.pos):
+        if self.score == TAM_MAX_COBRA - 1 and self.apple.pos in get_neighbors(self.head.pos):
             winning_path = [tuple(self.apple.pos)]
             print('Snake is about to win..')
             return winning_path
@@ -315,10 +315,8 @@ class Snake:
                 v_snake.go_to(pos)
                 v_snake.move()
 
-            v_snake.add_square()  # Because it will eat an apple
+            v_snake.add_square()  # COME A MAÇÃ
             path_2 = v_snake.get_path_to_tail()
-
-        # v_snake.draw()
 
         if path_2:  # If there is a path between v_snake and it's tail
             return path_1  # Choose BFS path to apple (Fastest and shortest path)
@@ -329,7 +327,7 @@ class Snake:
             # 3- Change the follow tail method if the snake gets stuck in a loop
         if self.longest_path_to_tail() and\
                 self.score % 2 == 0 and\
-                self.moves_without_eating < MAX_MOVES_WITHOUT_EATING / 2:
+                self.moves_without_eating < MOVIMENTOS_SEM_COMER / 2:
 
             # Choose longest path to tail
             return self.longest_path_to_tail()
@@ -356,13 +354,13 @@ class Snake:
         self.draw()
         self.move()
 
-        if self.score == ROWS * ROWS - INITIAL_SNAKE_LENGTH:  # If snake wins the game
+        if self.score == LINHAS * LINHAS - TAMANHO_INICIAL_COBRA:  # If snake wins the game
             self.won_game = True
 
             print("Snake won the game after {} moves"
                   .format(self.total_moves))
 
-            pygame.time.wait(1000 * WAIT_SECONDS_AFTER_WIN)
+            pygame.time.wait(1000 * PAUSA_PARA_REINICIO)
             return 1
 
         self.total_moves += 1
@@ -372,7 +370,7 @@ class Snake:
             self.is_dead = True
             self.reset()
 
-        if self.moves_without_eating == MAX_MOVES_WITHOUT_EATING:
+        if self.moves_without_eating == MOVIMENTOS_SEM_COMER:
             self.is_dead = True
             print("Snake got stuck, trying again..")
             self.reset()

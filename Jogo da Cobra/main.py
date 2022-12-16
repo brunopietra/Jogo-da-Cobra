@@ -1,6 +1,6 @@
 import pygame, sys
 from button import Button
-import a_estrela.snakeselfpackage.snakeself as aStar
+import a_estrela.cobra.snakeself as aStar
 import busca_profundidade.play as bProfunda
 
 

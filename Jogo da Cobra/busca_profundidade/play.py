@@ -3,24 +3,24 @@ from os import environ
 
 
 def draw_screen(surface):
-    surface.fill(SURFACE_CLR)
+    surface.fill(COR_TABULEIRO)
 
 
 def draw_grid(surface):
     x = 0
     y = 0
-    for r in range(ROWS):
+    for r in range(LINHAS):
         x = x + SQUARE_SIZE
         y = y + SQUARE_SIZE
-        pygame.draw.line(surface, GRID_CLR, (x, 0), (x, HEIGHT))
-        pygame.draw.line(surface, GRID_CLR, (0, y), (WIDTH, y))
+        pygame.draw.line(surface, COR_GRID, (x, 0), (x, ALTURA))
+        pygame.draw.line(surface, COR_GRID, (0, y), (LARGURA, y))
 
 
 def play_game_busca_profundidade():
     pygame.init()
     environ['SDL_VIDEO_CENTERED'] = '1'
-    pygame.display.set_caption("Snake Game")
-    game_surface = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("JOGO DA COBRA COM BFS")
+    game_surface = pygame.display.set_mode((LARGURA, ALTURA))
     clock = pygame.time.Clock()
     snake = Snake(game_surface)
 
@@ -31,7 +31,7 @@ def play_game_busca_profundidade():
 
         snake.update()
 
-        clock.tick(FPS)
+        clock.tick(30)
         pygame.display.update()
 
 
