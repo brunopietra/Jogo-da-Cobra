@@ -1,5 +1,5 @@
 import pygame
-from busca_profundidade.configs import *
+from busca_largura.configs import *
 from copy import deepcopy
 from random import randrange
 
@@ -204,7 +204,7 @@ class Snake:
 
         visited[s] = True
 
-        # Prev is used to find the parent node of each node to create a feasible path
+        # Achando posições prévias das tuplas
         prev = {tuple(pos): None for pos in GRID}
 
         while q:  # ENQUANTO A FILA NÃO ESTIVER VAZIA
@@ -217,7 +217,7 @@ class Snake:
                     prev[tuple(next_node)] = node
 
         path = list()
-        p_node = e  # Starting from end node, we will find the parent node of each node
+        p_node = e  # COMEÇANDO DE UM NÓ, ACHA SEUS PARENTES
 
         start_node_found = False
         while not start_node_found:
@@ -229,7 +229,7 @@ class Snake:
                 return path
             path.insert(0, p_node)
 
-        return []  # Path not available
+        return []  # QUANDO CAMINHO NÃO DISPONÍVEL
 
     def create_virtual_snake(self):  # COBRA VIRTUAL É UMA CÓPIA DA COBRA ORIGINAL
         v_snake = Snake(self.surface)

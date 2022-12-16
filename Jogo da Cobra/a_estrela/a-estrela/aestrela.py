@@ -141,8 +141,6 @@ class AEstrela:
     self.encontrado = False
 
   def buscar(self, atual):
-    print('------------------')
-    print('Atual: {}'.format(atual.rotulo))
     atual.visitado = True
 
     if atual == self.objetivo:

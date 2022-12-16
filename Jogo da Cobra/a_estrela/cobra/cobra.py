@@ -5,11 +5,11 @@ from numpy import sqrt
 init()
 
 def play_game_a_estrela():
-    def getpath(food1, snake1):
-        food1.camefrom = []
-        for s in snake1:
+    def getpath(comida1, cobra1):
+        comida1.camefrom = []
+        for s in cobra1:
             s.camefrom = []
-        openset = [snake1[-1]]
+        openset = [cobra1[-1]]
         closedset = []
         dir_array1 = []
         while 1:
@@ -17,7 +17,7 @@ def play_game_a_estrela():
             openset = [openset[i] for i in range(len(openset)) if not openset[i] == current1]
             closedset.append(current1)
             for neighbor in current1.neighbors:
-                if neighbor not in closedset and not neighbor.obstrucle and neighbor not in snake1:
+                if neighbor not in closedset and not neighbor.obstrucle and neighbor not in cobra1:
                     tempg = neighbor.g + 1
                     if neighbor in openset:
                         if tempg < neighbor.g:
@@ -25,10 +25,10 @@ def play_game_a_estrela():
                     else:
                         neighbor.g = tempg
                         openset.append(neighbor)
-                    neighbor.h = sqrt((neighbor.x - food1.x) ** 2 + (neighbor.y - food1.y) ** 2)
+                    neighbor.h = sqrt((neighbor.x - comida1.x) ** 2 + (neighbor.y - comida1.y) ** 2)
                     neighbor.f = neighbor.g + neighbor.h
                     neighbor.camefrom = current1
-            if current1 == food1:
+            if current1 == comida1:
                 break
         while current1.camefrom:
             if current1.x == current1.camefrom.x and current1.y < current1.camefrom.y:

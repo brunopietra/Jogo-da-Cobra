@@ -1,4 +1,4 @@
-from busca_profundidade.snake import *
+from busca_largura.snake import *
 from os import environ
 
 
@@ -16,7 +16,7 @@ def draw_grid(surface):
         pygame.draw.line(surface, COR_GRID, (0, y), (LARGURA, y))
 
 
-def play_game_busca_profundidade():
+def play_game_busca_largura():
     pygame.init()
     environ['SDL_VIDEO_CENTERED'] = '1'
     pygame.display.set_caption("JOGO DA COBRA COM BFS")
@@ -36,4 +36,6 @@ def play_game_busca_profundidade():
 
 
 if __name__ == '__main__':
-    play_game_busca_profundidade()
+    play_game_busca_largura()
+
+
