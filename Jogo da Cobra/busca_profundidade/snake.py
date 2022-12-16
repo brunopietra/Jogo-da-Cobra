@@ -1,5 +1,5 @@
 import pygame
-from busca_profundidade.settings import *
+from busca_profundidade.configs import *
 from copy import deepcopy
 from random import randrange
 

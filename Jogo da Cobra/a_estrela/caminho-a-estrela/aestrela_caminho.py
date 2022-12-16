@@ -5,7 +5,7 @@ WIDTH = 612
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("JOGO DA COBRA COM ALGORITMO A*")
 
-VERMELHO = (255, 0, 0)
+
 VERDE = (0, 255, 0)
 AMARELO = (255, 255, 0)
 PRETO = (0, 0, 0)
@@ -28,7 +28,7 @@ class Spot:
 		return self.row, self.col
 
 	def is_closed(self):
-		return self.color == VERMELHO
+		return self.color == ROXO
 
 	def is_open(self):
 		return self.color == VERDE
@@ -49,7 +49,7 @@ class Spot:
 		self.color = LARANJA
 
 	def make_closed(self):
-		self.color = VERMELHO
+		self.color = ROXO
 
 	def make_open(self):
 		self.color = VERDE

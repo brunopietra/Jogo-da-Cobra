@@ -78,7 +78,7 @@ def play_game_a_estrela():
     PRETO = (0, 0, 0)
     VERDE = (0, 255, 0)
     AMARELO = (255, 255, 0)
-    VERMELHO = (255, 0, 0)
+    ROXO = (128, 0, 128)
 
     colunas = 17
     linhas = 17
@@ -134,7 +134,7 @@ def play_game_a_estrela():
         for i in range(colunas):
             for j in range(colunas):
                 if grid[i][j].obstrucle:
-                    grid[i][j].show(VERMELHO)
+                    grid[i][j].show(ROXO)
 
         food.show(AMARELO)
         snake[-1].show(VERDE)

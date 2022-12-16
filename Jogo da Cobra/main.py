@@ -1,7 +1,7 @@
 import pygame, sys
-from button import Button
-import a_estrela.cobra.snakeself as aStar
-import busca_profundidade.play as bProfunda
+from botao import Button
+import a_estrela.cobra.cobra as aStar
+import busca_profundidade.jogobfs as bProfunda
 
 
 pygame.init()
