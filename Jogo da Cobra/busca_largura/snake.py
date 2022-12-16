@@ -10,7 +10,7 @@ class Square:
         self.surface = surface
         self.is_apple = is_apple
         self.is_tail = False
-        self.dir = [-1, 0]  # [x, y] Direction
+        self.dir = [-1, 0]  # [x, y]
 
         if self.is_apple:
             self.dir = [0, 0]
@@ -114,7 +114,7 @@ class Snake:
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-            # Set snake direction using keyboard
+            # usando o teclado
             keys = pygame.key.get_pressed()
 
             for _ in keys:
@@ -144,7 +144,7 @@ class Snake:
 
     def add_square(self):
         self.squares[-1].is_tail = False
-        tail = self.squares[-1]  # Tail before adding new square
+        tail = self.squares[-1] 
 
         direction = tail.dir
         if direction == [1, 0]:
@@ -157,7 +157,7 @@ class Snake:
             self.squares.append(Square([tail.pos[0], tail.pos[1] + 1], self.surface))
 
         self.squares[-1].dir = direction
-        self.squares[-1].is_tail = True  # Tail after adding new square
+        self.squares[-1].is_tail = True  # ADICIONANDO NOVO QUADRADO DEPOIS DE COMER
 
     def reset(self):
         self.__init__(self.surface)
@@ -296,7 +296,6 @@ class Snake:
                 return self.get_path_to_tail()
 
     def set_path(self):
-        # If there is only 1 apple left for snake to win and it's adjacent to head
         if self.score == TAM_MAX_COBRA - 1 and self.apple.pos in get_neighbors(self.head.pos):
             winning_path = [tuple(self.apple.pos)]
             print('Snake is about to win..')
@@ -304,10 +303,10 @@ class Snake:
 
         v_snake = self.create_virtual_snake()
 
-        # Let the virtual snake check if path to apple is available
+        # COBRA VIRTUAL CHECA CAMINHO ATÉ MAÇÃ
         path_1 = v_snake.bfs(tuple(v_snake.head.pos), tuple(v_snake.apple.pos))
 
-        # This will be the path to virtual snake tail after it follows path_1
+        # CAMINHO DA COBRA VIRTUAL
         path_2 = []
 
         if path_1:
@@ -318,31 +317,22 @@ class Snake:
             v_snake.add_square()  # COME A MAÇÃ
             path_2 = v_snake.get_path_to_tail()
 
-        if path_2:  # If there is a path between v_snake and it's tail
-            return path_1  # Choose BFS path to apple (Fastest and shortest path)
+        if path_2: 
+            return path_1  # BFS
 
-        # If path_1 or path_2 not available, test these 3 conditions:
-            # 1- Make sure that the longest path to tail is available
-            # 2- If score is even, choose longest_path_to_tail() to follow the tail, if odd use any_safe_move()
-            # 3- Change the follow tail method if the snake gets stuck in a loop
         if self.longest_path_to_tail() and\
                 self.score % 2 == 0 and\
                 self.moves_without_eating < MOVIMENTOS_SEM_COMER / 2:
 
-            # Choose longest path to tail
             return self.longest_path_to_tail()
 
-        # Play any possible safe move and make sure path to tail is available
+        # FAZENDO MOVIMENTOS GARANTIDOS
         if self.any_safe_move():
             return self.any_safe_move()
 
-        # If path to tail is available
         if self.get_path_to_tail():
-            # Choose shortest path to tail
+            # ESCOLHER CAMINHO MAIS CURTO
             return self.get_path_to_tail()
-
-        # Snake couldn't find a path and will probably die
-        print('No available path, snake in danger!')
 
     def update(self):
         self.handle_events()
@@ -354,7 +344,7 @@ class Snake:
         self.draw()
         self.move()
 
-        if self.score == LINHAS * LINHAS - TAMANHO_INICIAL_COBRA:  # If snake wins the game
+        if self.score == LINHAS * LINHAS - TAMANHO_INICIAL_COBRA:  # SE A COBRA GANHAR
             self.won_game = True
 
             print("Snake won the game after {} moves"
